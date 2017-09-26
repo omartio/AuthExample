@@ -34,6 +34,7 @@
 		909E6AA31F796D5700B13166 /* StartCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909E6AA21F796D5700B13166 /* StartCoordinator.swift */; };
 		909E6AA51F796D6F00B13166 /* StartControllersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909E6AA41F796D6F00B13166 /* StartControllersFactory.swift */; };
 		909E6AAA1F796ED000B13166 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909E6AA91F796ED000B13166 /* StartViewController.swift */; };
+		90D797CD1F7ACD8C005B4755 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 90D797CF1F7ACD8C005B4755 /* Localizable.strings */; };
 		A06FA6001F7A2E1400A6A954 /* AuthControllersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06FA5FF1F7A2E1300A6A954 /* AuthControllersFactory.swift */; };
 		A06FA6021F7A2F4000A6A954 /* AuthValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06FA6011F7A2F4000A6A954 /* AuthValidator.swift */; };
 		A06FA6041F7A4BE500A6A954 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06FA6031F7A496900A6A954 /* API.swift */; };
@@ -82,6 +83,10 @@
 		909E6AA21F796D5700B13166 /* StartCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartCoordinator.swift; sourceTree = "<group>"; };
 		909E6AA41F796D6F00B13166 /* StartControllersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartControllersFactory.swift; sourceTree = "<group>"; };
 		909E6AA91F796ED000B13166 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
+		90D797C91F7ACAF5005B4755 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		90D797CA1F7ACAF8005B4755 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		90D797CE1F7ACD8C005B4755 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		90D797D01F7ACD8E005B4755 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A06FA5FF1F7A2E1300A6A954 /* AuthControllersFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthControllersFactory.swift; sourceTree = "<group>"; };
 		A06FA6011F7A2F4000A6A954 /* AuthValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthValidator.swift; sourceTree = "<group>"; };
 		A06FA6031F7A496900A6A954 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -256,6 +261,7 @@
 				909095331F796340004680A4 /* Assets.xcassets */,
 				909095351F796340004680A4 /* LaunchScreen.storyboard */,
 				909095381F796340004680A4 /* Info.plist */,
+				90D797CF1F7ACD8C005B4755 /* Localizable.strings */,
 			);
 			name = "Supporting files";
 			sourceTree = "<group>";
@@ -347,6 +353,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 909095201F796340004680A4;
 			productRefGroup = 9090952A1F796340004680A4 /* Products */;
@@ -365,6 +372,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				909095371F796340004680A4 /* LaunchScreen.storyboard in Resources */,
+				90D797CD1F7ACD8C005B4755 /* Localizable.strings in Resources */,
 				909095341F796340004680A4 /* Assets.xcassets in Resources */,
 				909095321F796340004680A4 /* Main.storyboard in Resources */,
 			);
@@ -427,7 +435,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C5FA1C37E5878861C8675C78 /* [CP] Copy Pods Resources */ = {
@@ -503,6 +511,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				909095311F796340004680A4 /* Base */,
+				90D797C91F7ACAF5005B4755 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -511,8 +520,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				909095361F796340004680A4 /* Base */,
+				90D797CA1F7ACAF8005B4755 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		90D797CF1F7ACD8C005B4755 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				90D797CE1F7ACD8C005B4755 /* en */,
+				90D797D01F7ACD8E005B4755 /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -522,6 +541,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -579,6 +599,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

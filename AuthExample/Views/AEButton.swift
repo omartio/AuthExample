@@ -122,7 +122,7 @@ public class AEButton: UIButton {
     private var successImageView: UIImageView?
     private func showSuccess() {
         if successImageView == nil {
-            successImageView = UIImageView(image: #imageLiteral(resourceName: "check"))
+            successImageView = UIImageView(image: #imageLiteral(resourceName: "checked"))
             switch type {
             case .filled, .filledWithShadow:
                 successImageView?.tintColor = UIColor.white

@@ -182,11 +182,15 @@ class LoginViewController: EnterViewController, LoginViewControllerOutput {
             return
         }
         
+        button.activityState = .active
         viewModel.login { (response) in
             if response != nil {
+                self.button.showSuccesAutoHide()
                 let alertController = UIAlertController(title: "Погода", message: response, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "Закрыть", style: UIAlertActionStyle.cancel, handler: nil))
                 self.present(alertController, animated: true, completion: nil)
+            } else {
+                self.button.activityState = .normal
             }
         }
     }
