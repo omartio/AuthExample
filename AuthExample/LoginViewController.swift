@@ -91,11 +91,11 @@ class LoginViewController: EnterViewController, LoginViewControllerOutput {
     }
     
 	func bindView() {
-		_ = loginField.rx.text.orEmpty.bind(to: viewModel.userNameObservable)
+		_ = loginField.rx.text.orEmpty.bind(to: viewModel.emailObservable)
 		_ = passwordField.rx.text.orEmpty.bind(to: viewModel.passwordObservable)
 
         // Переход на поле пароля по кнопку next
-		_ = loginField.rx.controlEvent(.editingDidEndOnExit).subscribe(onNext: { [weak self] _ in
+		loginField.rx.controlEvent(.editingDidEndOnExit).subscribe(onNext: { [weak self] _ in
 			self?.passwordField.becomeFirstResponder()
 		}).addDisposableTo(disposeBug)
         
@@ -107,28 +107,34 @@ class LoginViewController: EnterViewController, LoginViewControllerOutput {
         }).addDisposableTo(disposeBug)
         
         // Проверка почты при выходе из поля
-        _ = loginField.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] _ in
-            _ = self?.validateEmail()
+        loginField.rx.controlEvent(.editingDidEnd)
+            .withLatestFrom(viewModel.emailValidObservable)
+            .subscribe(onNext: { [weak self] valid in
+            self?.isEmailValid = valid
         }).addDisposableTo(disposeBug)
         
         // Проверка пароля при выходи из поля
-        passwordField.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] _ in
-            _ = self?.validatePassword()
-        }).addDisposableTo(disposeBug)
+        passwordField.rx.controlEvent(.editingDidEnd)
+            .withLatestFrom(viewModel.passwordValidObservable)
+            .subscribe(onNext: { [weak self] valid in
+                self?.isPasswordValid = valid
+            }).addDisposableTo(disposeBug)
         
         // Проверка почты на исправление
-        loginField.rx.text.orEmpty.subscribe(onNext: { [weak self] (text) in
-            if self?.loginField.errorMessage != nil {
-                _ = self?.validateEmail()
-            }
+        loginField.rx.text.filter({ [weak self] _ in
+            return self?.loginField.errorMessage != nil
+        }).withLatestFrom(viewModel.emailValidObservable)
+            .subscribe(onNext: { [weak self] (valid) in
+            self?.isEmailValid = valid
         }).addDisposableTo(disposeBug)
         
         // Проверка пароля на исправление
-        passwordField.rx.text.orEmpty.subscribe(onNext: { [weak self] (text) in
-            if self?.passwordField.errorMessage != nil {
-                _ = self?.validatePassword()
-            }
-        }).addDisposableTo(disposeBug)
+        passwordField.rx.text.filter({ [weak self] _ in
+            return self?.passwordField.errorMessage != nil
+        }).withLatestFrom(viewModel.passwordValidObservable)
+            .subscribe(onNext: { [weak self] (valid) in
+                self?.isPasswordValid = valid
+            }).addDisposableTo(disposeBug)
         
         button.addTarget(self, action: #selector(login), for: .touchUpInside)
         signupButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
@@ -137,34 +143,42 @@ class LoginViewController: EnterViewController, LoginViewControllerOutput {
     
     // MARK: - Actions
     
-    func validateEmail() -> Bool {
-        guard let email = loginField.text, email.characters.count > 0 else { return true }
-        if email.isValidEmail {
-            loginField.errorMessage = nil
-            return true
-        } else {
-            loginField.errorMessage = "Неверный e-mail"
-            return false
+    var isEmailValid: Bool = true {
+        didSet {
+            if isEmailValid {
+                loginField.errorMessage = nil
+            } else {
+                loginField.errorMessage = "Неверный e-mail"
+            }
         }
     }
     
-    func validatePassword() -> Bool {
-        guard let password = passwordField.text, password.characters.count > 0 else { return true }
-        if password.isValidPassword {
-            passwordField.errorMessage = nil
-            wrongPasswordLabel.isHidden = true
-            return true
-        } else {
-            passwordField.errorMessage = "Неверный пароль"
-            wrongPasswordLabel.isHidden = false
-            return false
+    var isPasswordValid = true {
+        didSet {
+            if isPasswordValid {
+                passwordField.errorMessage = nil
+                wrongPasswordLabel.isHidden = true
+            } else {
+                passwordField.errorMessage = "Неверный пароль"
+                wrongPasswordLabel.isHidden = false
+            }
         }
     }
 
     func login() {
         self.view.endEditing(true)
         
-        guard validateEmail() && validatePassword() else {
+        guard viewModel.isValid else {
+            return
+        }
+        
+        guard (loginField.text?.characters.count ?? 0) > 0 else {
+            isEmailValid = false
+            return
+        }
+        
+        guard (passwordField.text?.characters.count ?? 0) > 0 else {
+            isPasswordValid = false
             return
         }
         

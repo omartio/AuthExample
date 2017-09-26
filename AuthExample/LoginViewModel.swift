@@ -15,12 +15,34 @@ import SwiftyJSON
 class LoginViewModel {
     
     // input
-    var userNameObservable = Variable("")
+    var emailObservable = Variable("")
     var passwordObservable = Variable("")
     
+    let emailValidObservable: Observable<Bool>
+    let passwordValidObservable: Observable<Bool>
+    
+    var isValid = false
+    let disposeBag = DisposeBag()
+    
+    
+    init() {
+        emailValidObservable = emailObservable.asObservable().map { email in
+            return email.characters.count == 0 || email.isValidEmail
+        }
+        
+        passwordValidObservable = passwordObservable.asObservable().map({ password in
+            return password.characters.count == 0 || password.isValidPassword
+        })
+        
+        Observable.combineLatest(emailValidObservable, passwordValidObservable, resultSelector: { (emailValid, passwordValid) in
+            return emailValid && passwordValid
+        }).subscribe(onNext: { (valid) in
+            self.isValid = valid
+        }).addDisposableTo(disposeBag)
+    }
     
     func login(_ completion: @escaping (String?) -> Void) {
-        let email = userNameObservable.value
+        let email = emailObservable.value
         let password = passwordObservable.value
         
         API.request(.getWeather("London,uk")) { (serverResponse) in
@@ -39,4 +61,6 @@ class LoginViewModel {
             completion(tempString)
         }
     }
+    
+    
 }
