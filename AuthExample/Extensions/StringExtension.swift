@@ -43,17 +43,6 @@ extension String {
         return true
     }
     
-    /// Истино если в строке нет пробелов И если все буквы английсие
-    var isValidPassword: Bool {
-        let nameCharacters =  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-!@#$%^&*"
-        for char in self.characters {
-            if !nameCharacters.characters.contains(char) {
-                return false
-            }
-        }
-        return true
-    }
-    
     var urlCheckResults: [NSTextCheckingResult] {
         let types: NSTextCheckingResult.CheckingType = .link
         let detector = try? NSDataDetector(types: types.rawValue)

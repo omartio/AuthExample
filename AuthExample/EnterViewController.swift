@@ -12,15 +12,18 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import SkyFloatingLabelTextField
-import RxGesture
+import RxKeyboard
 
 class EnterViewController: UIViewController, ControllerFlowOutput, UIGestureRecognizerDelegate {
     
     let loginField = SkyFloatingLabelTextField()
     let passwordField = SkyFloatingLabelTextField()
     let button = AEButtonFilled()
+    var centerConstraint: Constraint!
     
     var onCompletion: (() -> ())?
+    
+    let keyboardDisposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,30 +58,39 @@ class EnterViewController: UIViewController, ControllerFlowOutput, UIGestureReco
         // Constraints
         
         loginField.snp.makeConstraints { (make) in
-            make.top.equalTo(self.view).offset(UIScreen.main.bounds.height / 5)
-            make.left.equalTo(self.view).offset(25)
-            make.right.equalTo(self.view).offset(-25)
-            make.height.equalTo(50)
+            make.left.equalTo(self.view).offset(15)
+            make.right.equalTo(self.view).offset(-15)
+            make.height.equalTo(44)
+            make.top.greaterThanOrEqualToSuperview().offset(5)
         }
         
         passwordField.snp.makeConstraints { (make) in
-            make.top.equalTo(loginField.snp.bottom).offset(32)
+            make.top.equalTo(loginField.snp.bottom).offset(18)
             make.left.equalTo(loginField)
             make.right.equalTo(loginField)
             make.height.equalTo(loginField)
         }
         
         button.snp.makeConstraints { (make) in
-            make.top.equalTo(passwordField.snp.bottom).offset(34)
+            make.top.equalTo(passwordField.snp.bottom).offset(38)
             make.centerX.equalTo(self.view)
             make.size.equalTo(button.preferredSize)
+            self.centerConstraint = make.centerY.equalTo(self.view).priority(750).constraint
         }
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector(tap(gr:)))
         gesture.delegate = self
         view.addGestureRecognizer(gesture)
+        
+        RxKeyboard.instance.visibleHeight.skip(1).drive(onNext: {[weak self] (height) in
+            // Центр видимой части
+            let offset = height / 2
+            self?.centerConstraint.update(offset: -offset)
+            UIView.animate(withDuration: 0.25, animations: {
+                self?.view.layoutIfNeeded()
+            })
+        }).addDisposableTo(keyboardDisposeBag)
     }
-    
     
     private func configureField(field: SkyFloatingLabelTextField) {
 
@@ -95,6 +107,7 @@ class EnterViewController: UIViewController, ControllerFlowOutput, UIGestureReco
         field.lineColor = ThemeManager.disabledColor
         field.selectedTitleColor = ThemeManager.secondColor
         field.selectedLineColor = ThemeManager.secondColor
+        field.errorColor = UIColor.ae.red
     }
     
     func closeButtonTapped() {

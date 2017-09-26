@@ -19,9 +19,24 @@ class LoginViewModel {
     var passwordObservable = Variable("")
     
     
-    func login(_ completion: @escaping (Bool) -> Void) {
+    func login(_ completion: @escaping (String?) -> Void) {
         let email = userNameObservable.value
         let password = passwordObservable.value
         
+        API.request(.getWeather("London,uk")) { (serverResponse) in
+            
+            guard serverResponse.isSuccess else {
+                completion(serverResponse.error?.localizedDescription)
+                return
+            }
+            
+            guard let json = serverResponse.apiResponse?.data else {
+                completion("Нет данных")
+                return
+            }
+            
+            let tempString = String(format:"Температура %.2f К", json["main"]["temp"].floatValue)
+            completion(tempString)
+        }
     }
 }

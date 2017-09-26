@@ -27,6 +27,8 @@ class StartViewController: UIViewController, StartViewControllerOutput {
     }
 
     func iniUI() {
+        title = "Добро пожаловать"
+        
         view.backgroundColor = UIColor.white
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
@@ -34,10 +36,10 @@ class StartViewController: UIViewController, StartViewControllerOutput {
         view.addSubview(loginButton)
         
         // hide nav bar shadow
-        navigationController?.navigationBar.barTintColor = UIColor.white
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+//        navigationController?.navigationBar.barTintColor = UIColor.white
+//        navigationController?.navigationBar.isTranslucent = false
+//        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+//        navigationController?.navigationBar.shadowImage = UIImage()
     }
 
     func initConstraints() {
